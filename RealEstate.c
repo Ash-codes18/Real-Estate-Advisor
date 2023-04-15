@@ -86,7 +86,8 @@ char fp[20];
 
 while(1){ // Buying and selling
 printf("What would you like to do?\n");
-printf("1.Buy Plots\n2.Sell Plots\n3.Add New Record\n");
+printf("1.Buy Plots\n2.Sell Plots\n3.Add New Record\n4.Edit Record\n5.Delete Record\n6.Display Available Property\n7.Search\n");
+printf("Enter your choice : ");
 scanf("%d",&i);
 
 if(i==1){  //Buy Loop
@@ -184,66 +185,190 @@ else if(i == 3) { // Add New Record
 }
 
 
-// else if (i == 4) { // Edit Record
-//     int plot_no, new_price, row_num = 0, col_num = 0;
-//     char grid[4][5], available_plot[20], price[20], temp[20], *token;
+else if (i == 4) { // Edit Record
+    int plot_no=1, new_price, row_num = 0, col_num = 0;
+    char grid[4][5], available_plot[20], price[20], temp[20], *token;
 
-//     // display the layout of plots
-//    printf("Here is the layout of plots.\n");
-// for (row_num = 0; row_num < 4; row_num++) {
-//     for (col_num = 0; col_num < 5; col_num++) {
-//         sprintf(temp, "%d", (row_num * 5) + col_num + 1);
-//         strcpy(grid[row_num][col_num], temp);
-//         printf("%s\t", grid[row_num][col_num]);
-//     }
-//     printf("\n");
-// }
+    // display the layout of plots
+   printf("Here is the layout of plots.\n");
+for (row_num = 0; row_num < 4; row_num++) {
+    for (col_num = 0; col_num < 5; col_num++) {
+        grid[row_num][col_num]=plot_no;
+plot_no++;
+printf("%d\t",grid[row_num][col_num]);
+    }
+    printf("\n");
+}
 
-//     // get the plot to edit
-//     printf("Enter the plot number you want to edit: ");
-//     scanf("%d", &plot_no);
+    // get the plot to edit
+    printf("Enter the plot number you want to edit: ");
+    scanf("%d", &plot_no);
 
-//     // check if the plot is available
-//     FILE *available_plots_file = fopen("Availableplots.txt", "r");
-//     int available = 0;
-//     while (fgets(available_plot, 20, available_plots_file)) {
-//         token = strtok(available_plot, "\n");
-//         if (plot_no == atoi(token)) {
-//             available = 1;
-//             break;
-//         }
-//     }
-//     fclose(available_plots_file);
+    // check if the plot is available
+    FILE *available_plots_file = fopen("Availableplots.txt", "r");
+    int available = 0;
+    while (fgets(available_plot, 20, available_plots_file)) {
+        token = strtok(available_plot, "\n");
+        if (plot_no == atoi(token)) {
+            available = 1;
+            break;
+        }
+    }
+    fclose(available_plots_file);
 
-//     if (!available) {
-//         printf("Plot not available!\n");
-//         continue;
-//     }
+    if (!available) {
+        printf("Plot not available!\n");
+        continue;
+    }
 
-//     // get the new price for the plot
-//     printf("Enter the new price for the plot: ");
-//     scanf("%d", &new_price);
+    // get the new price for the plot
+    printf("Enter the new price for the plot: ");
+    scanf("%d", &new_price);
 
-//     // update the plot price in the PlotPrice.txt file
-//     FILE *plot_prices_file = fopen("PlotPrice.txt", "r");
-//     FILE *temp_file = fopen("temp.txt", "w");
-//     while (fgets(price, 20, plot_prices_file)) {
-//         strcpy(temp, price);
-//         token = strtok(temp, " ");
-//         if (plot_no == atoi(token)) {
-//             fprintf(temp_file, "%d %d Rs.\n", plot_no, new_price);
-//         } else {
-//             fprintf(temp_file, "%s", price);
-//         }
-//     }
-//     fclose(plot_prices_file);
-//     fclose(temp_file);
-//     remove("PlotPrice.txt");
-//     rename("temp.txt", "PlotPrice.txt");
+    // update the plot price in the PlotPrice.txt file
+    FILE *plot_prices_file = fopen("PlotPrice.txt", "r");
+    FILE *temp_file = fopen("temp.txt", "w");
+    while (fgets(price, 20, plot_prices_file)) {
+        strcpy(temp, price);
+        token = strtok(temp, " ");
+        if (plot_no == atoi(token)) {
+            fprintf(temp_file, "%d %d Rs.\n", plot_no, new_price);
+        } else {
+            fprintf(temp_file, "%s", price);
+        }
+    }
+    fclose(plot_prices_file);
+    fclose(temp_file);
+    remove("PlotPrice.txt");
+    rename("temp.txt", "PlotPrice.txt");
 
-//     printf("Record updated successfully!\n");
-// }
+    printf("Record updated successfully!\n");
+}
 
+
+
+else if(i == 5) { // Delete Record
+    int plot_no, count = 0;
+    char line[100], temp[100];
+    FILE *fp1, *fp2, *fp3, *fp4;
+
+    printf("Enter the plot number to delete: ");
+    scanf("%d", &plot_no);
+
+    // Open original AvailablePlots file in read mode
+    fp1 = fopen("AvailablePlots.txt", "r");
+
+    // Create a temporary AvailablePlots file in write mode
+    fp2 = fopen("temp1.txt", "w");
+
+    // Open original PlotPrice file in read mode
+    fp3 = fopen("PlotPrice.txt", "r");
+
+    // Create a temporary PlotPrice file in write mode
+    fp4 = fopen("temp2.txt", "w");
+
+    // Read the contents of the original AvailablePlots file and copy all lines except the line to be deleted to the temporary AvailablePlots file
+    while(fgets(line, 100, fp1)) {
+        sscanf(line, "%d", &count);
+        if(count != plot_no) {
+            fprintf(fp2, "%s", line);
+        }
+    }
+
+    // Read the contents of the original PlotPrice file and copy all lines except the line to be deleted to the temporary PlotPrice file
+    while(fgets(line, 100, fp3)) {
+        sscanf(line, "%d", &count);
+        if(count != plot_no) {
+            fprintf(fp4, "%s", line);
+        }
+    }
+
+    // Close the files
+    fclose(fp1);
+    fclose(fp2);
+    fclose(fp3);
+    fclose(fp4);
+
+    // Remove the original AvailablePlots file
+    remove("AvailablePlots.txt");
+
+    // Remove the original PlotPrice file
+    remove("PlotPrice.txt");
+
+    // Rename the temporary AvailablePlots file as the original AvailablePlots file
+    rename("temp1.txt", "AvailablePlots.txt");
+
+    // Rename the temporary PlotPrice file as the original PlotPrice file
+    rename("temp2.txt", "PlotPrice.txt");
+
+    printf("Record with plot number %d has been deleted.\n", plot_no);
+}
+
+
+
+else if (i == 6) { // Display Available Property
+    FILE *plotfile = fopen("AvailablePlots.txt", "r");
+    int plotno = 0;
+    printf("The following plots are available for purchase:\n");
+    while (fscanf(plotfile, "%d", &plotno) != EOF) { // read plot numbers from file
+        printf("%d\n", plotno);
+    }
+    fclose(plotfile);
+    continue;
+}
+
+
+
+
+else if (i == 7) { // Search Loop
+    int plot_no, flag = 0;
+    char price[20];
+    printf("Enter plot number to search: ");
+    scanf("%d", &plot_no);
+
+    // Search for the plot number in all user files
+    for (int j = 1; j <= 9; j++) {
+        char filename[20];
+        sprintf(filename, "User%d.txt", j);
+        FILE *userfile = fopen(filename, "r");
+
+        if (userfile == NULL) {
+            printf("Error: Unable to open file %s\n", filename);
+            continue;
+        }
+
+        int i = 0;
+        while (fgets(price, 20, userfile)) {
+            i++;
+            if (i == 2 && atoi(price) == plot_no) {
+                flag = 1;
+                printf("Plot %d is owned by User%d\n", plot_no, j);
+                break;
+            }
+        }
+
+        fclose(userfile);
+    }
+
+    if (!flag) {
+        // Search for the plot number in the available plots file
+        FILE *plotfile = fopen("AvailablePlots.txt", "r");
+        int plotno = 0;
+        while (fscanf(plotfile, "%d", &plotno) != EOF) {
+            if (plotno == plot_no) {
+                flag = 1;
+                printf("Plot %d is available for purchase.\n", plot_no);
+                break;
+            }
+        }
+        fclose(plotfile);
+    }
+
+    if (!flag) {
+        printf("Plot %d is not found.\n", plot_no);
+    }
+    continue;
+}
 
 
 
