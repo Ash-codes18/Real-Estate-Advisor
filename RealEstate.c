@@ -8,7 +8,7 @@ FILE *userfile;
 int c=0,i=0,j=0, unum;
 char un[20],fiun[20],unu[1];
 char pw[20], fpw[20];
-printf("Welcome to the plot management system.\n");
+printf("\n\n\n                                   Welcome to the plot management system!\n\n\n");
 
 while(1){  // Login 
 
@@ -39,7 +39,7 @@ case 8: userfile=fopen("User8.txt","r+");
 break;
 case 9: userfile=fopen("User9.txt","r+");
 break;
-default: {printf("Incorrect Username!\n");
+default: {printf("\nInvalid Username or Password!\n\n");
 continue;}}
 
 i=0;
@@ -57,7 +57,7 @@ break;
 }}
 
 if(c!=strlen(un))
-{printf("invalid username!\n");
+{printf("\nIncorrect username!\n\n");
 continue;}
 
 i=0;
@@ -75,20 +75,21 @@ break;
 }}
 
 if(c==strlen(pw))
-{printf("Welcome %s\n",un);
+{printf("\nWelcome %s!\n\n\n",un);
 break;}
 else
-printf("Incorrect Username or Pasword!\n");
+printf("\nIncorrect Pasword!\n\n");
 } //Login Loop end
 
 int buyplot=0;
 char fp[20];
 
 while(1){ // Buying and selling
-printf("What would you like to do?\n");
+printf("What would you like to do?\n\n");
 printf("1.Buy Plots\n2.Sell Plots\n3.Add New Record\n4.Edit Record\n5.Delete Record\n6.Display Available Property\n7.Search\n");
-printf("Enter your choice : ");
+printf("\nEnter your choice : ");
 scanf("%d",&i);
+printf("\n");
 
 if(i==1){  //Buy Loop
 int j,p,q;
@@ -111,12 +112,13 @@ FILE *plotfile2=fopen("AvialablePlots.txt","r"); // This file has the list of av
 char availableplot[1], plotprice[10];
 int ap=0,c1=0,c2=0;
 
-printf("Here's the list of available plots and their price: \n");
+printf("\nHere's the list of available plots and their price: \n");
 while(fgets(plotprice,2,plotfile1)) //Printing available plots from the file
 printf("%s",plotprice);
 
 printf("\nEnter the plot number you would like to buy: ");
 scanf("%d",&buyplot);
+printf("\n");
 
 
 c1=0;
@@ -395,7 +397,7 @@ j++;
 }
 
 if(p==q)
-{printf("Payment Successful! Thank you for buying plot %d!",buyplot);
+{printf("Payment Successful! Thank you for buying plot %d!\n\n",buyplot);
 break;}
 
 else 
@@ -406,7 +408,7 @@ break;
 
 
 else if (i==2){
-printf("Thank you for putting your plot up for sale.\nYou will be notified if a buyer is interested.\n");
+printf("Thank you for putting your plot up for sale.\nYou will be notified if a buyer is interested.\n\n");
 }
 break;
 
