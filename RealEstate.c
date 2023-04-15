@@ -86,7 +86,7 @@ char fp[20];
 
 while(1){ // Buying and selling
 printf("What would you like to do?\n");
-printf("1.Buy Plots\n2.Sell Plots\n");
+printf("1.Buy Plots\n2.Sell Plots\n3.Add New Record\n");
 scanf("%d",&i);
 
 if(i==1){  //Buy Loop
@@ -161,7 +161,91 @@ FILE *plotfile1=fopen("PlotPrice.txt","a");
 fprintf(plotfile2, "\n%s", splot);
 fprintf(plotfile1,"\n%s %d Rs.", splot, sprice);
 break;
+
 }// Sell end
+
+else if(i == 3) { // Add New Record
+    int plot_no, price;
+
+    printf("Enter plot number: ");
+    scanf("%d", &plot_no);
+
+    printf("Enter plot price: ");
+    scanf("%d", &price);
+
+    FILE *available_plots = fopen("AvailablePlots.txt", "a");
+    FILE *plot_price = fopen("PlotPrice.txt", "a");
+
+    fprintf(available_plots, "\n%d", plot_no);
+    fprintf(plot_price, "\n%d %d Rs.", plot_no, price);
+
+    fclose(available_plots);
+    fclose(plot_price);
+}
+
+
+// else if (i == 4) { // Edit Record
+//     int plot_no, new_price, row_num = 0, col_num = 0;
+//     char grid[4][5], available_plot[20], price[20], temp[20], *token;
+
+//     // display the layout of plots
+//    printf("Here is the layout of plots.\n");
+// for (row_num = 0; row_num < 4; row_num++) {
+//     for (col_num = 0; col_num < 5; col_num++) {
+//         sprintf(temp, "%d", (row_num * 5) + col_num + 1);
+//         strcpy(grid[row_num][col_num], temp);
+//         printf("%s\t", grid[row_num][col_num]);
+//     }
+//     printf("\n");
+// }
+
+//     // get the plot to edit
+//     printf("Enter the plot number you want to edit: ");
+//     scanf("%d", &plot_no);
+
+//     // check if the plot is available
+//     FILE *available_plots_file = fopen("Availableplots.txt", "r");
+//     int available = 0;
+//     while (fgets(available_plot, 20, available_plots_file)) {
+//         token = strtok(available_plot, "\n");
+//         if (plot_no == atoi(token)) {
+//             available = 1;
+//             break;
+//         }
+//     }
+//     fclose(available_plots_file);
+
+//     if (!available) {
+//         printf("Plot not available!\n");
+//         continue;
+//     }
+
+//     // get the new price for the plot
+//     printf("Enter the new price for the plot: ");
+//     scanf("%d", &new_price);
+
+//     // update the plot price in the PlotPrice.txt file
+//     FILE *plot_prices_file = fopen("PlotPrice.txt", "r");
+//     FILE *temp_file = fopen("temp.txt", "w");
+//     while (fgets(price, 20, plot_prices_file)) {
+//         strcpy(temp, price);
+//         token = strtok(temp, " ");
+//         if (plot_no == atoi(token)) {
+//             fprintf(temp_file, "%d %d Rs.\n", plot_no, new_price);
+//         } else {
+//             fprintf(temp_file, "%s", price);
+//         }
+//     }
+//     fclose(plot_prices_file);
+//     fclose(temp_file);
+//     remove("PlotPrice.txt");
+//     rename("temp.txt", "PlotPrice.txt");
+
+//     printf("Record updated successfully!\n");
+// }
+
+
+
 
 else 
 printf("Please enter a valid response.\n");
@@ -200,6 +284,7 @@ else if (i==2){
 printf("Thank you for putting your plot up for sale.\nYou will be notified if a buyer is interested.\n");
 }
 break;
+
 } // End of Payment
 
 }//4, 2, 3, 9, 7, 6, 11, 14, 10
