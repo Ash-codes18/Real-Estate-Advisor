@@ -8,7 +8,7 @@ FILE *userfile;
 int c=0,i=0,j=0, unum;
 char un[20],fiun[20],unu[1];
 char pw[20], fpw[20];
-printf("\n\n\n                                   Welcome to the plot management system!\n\n\n");
+printf("\n\n\n                                   Welcome to the Real Estate Advisor!\n\n\n");
 
 while(1){  // Login 
 
@@ -18,7 +18,7 @@ printf("Enter password: ");
 gets(pw);
 
 unu[0]=un[4];
-unum=atoi(unu); // atoi converts char/string to int
+unum=atoi(unu); 
 
 switch(unum){ // Opening userfile according to username using switchcase
 case 1: userfile=fopen("User1.txt","r+");
